@@ -1,27 +1,27 @@
 ---
-title: "Proyecto Distribución de Pérdidas"
-author: "David Zumbado"
-format: pdf
-editor: visual
+title: Not used
+subtitle: Not used
+author:
+  - name: Not used
+editor: source
+format:
+  pdf:
+    documentclass: scrbook
+    classoption: ["onepage", "openany"]
+    template-partials:
+      - "before-body.tex"
+      - "_titlepage.tex" 
+    include-in-header: 
+      - "in-header.tex"
+    toc: true
+    lof: true
+    lot: true
+
+bibliography: references.bib
 ---
 
-## Quarto
+## 
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+# Intro 
 
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
-
-```{r}
-1 + 1
-```
-
-You can add options to executable code like this
-
-```{r}
-#| echo: false
-2 * 2
-```
-
-The `echo: false` option disables the printing of code (only output is displayed).
+# Referencias
