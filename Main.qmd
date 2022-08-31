@@ -116,7 +116,7 @@ Los datos se conforman por 13 variables: claim_number es el identificador del re
 
 
 
-2.  **Título**: Ignacio prueba 
+2.  **Título**: Ignacio prueba
 
     **Autor:** 
 
