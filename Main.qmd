@@ -110,6 +110,40 @@ Los datos se conforman por 13 variables: claim_number es el identificador del re
     **Problemas con el argumento o el tema:** Las medidas de riesgo utilizando cópulas resultan en medidas de riesgo más altas que en los datos históricos.
 
     **Resumen en un párrafo**: Se eliminan los reclamos que fueron negados justificando el hecho de que el punto de la investigación es cuantificar los pagos que efectivamente fueron hechos, además del gran volumen de los datos. La agregación de los datos se hace por mes y con suma para la severidad y por frecuencia de los reclamos. El autor nota que hay un tendencia negativa de la frecuencia y severidad con respecto al tiempo por lo que procede a eliminar la tendencia. Luego determina la mejor marginal para cada variable utilizando MLE. Se encuentra que la binomial negativa se ajusta mejor a las frecuencias. Por otro lado la Log-Laplace se ajusta mejor a los reclamos por daños a la propiedad y la lognormal se ajusta mejor a los reclamos por pérdidas de los bienes por lo que se utilizan estas dos para modelar la severidad. Luego se procede a hacer algo similar con los resultados de eliminar la tendencia. Se encuentra que el proceso de eliminación de la tendencia facilita la búsqueda de una distribuciones. Se encuentra que todas las variables pares muestran algún tipo de dependencia en las colas. Finalmente, las cópulas multivariadas se comparan utilizando log verosimilitud y se obtiene que las cópulas elípticas (Gaussiana y t-Student) se ajustan mejor que las arquimedianas (Clayton y Gumbel).
+    
+
+
+
+2.  **Título**: Ignacio prueba
+
+    **Autor:** 
+
+    **Nombre del tema**: 
+
+    **Forma de organizarlo**:
+
+    -   Cronológico: 
+
+    -   Metodológico: 
+
+    -   Temático:
+
+    -   Teoría: Probabilidad y estadística
+
+    **Resumen en una oración**:
+
+    **Argumento central**: 
+
+    **Problemas con el argumento o el tema:** 
+
+    **Resumen en un párrafo**: 
+
+
+
+
+
+
+
 
 # Referencias para escribir en Quarto
 
