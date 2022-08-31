@@ -36,11 +36,11 @@ library(kableExtra)
 
 El grupo de trabajo estará integrado por:
 
--   Ignacio Barrantes Valerio
+-   Ignacio Barrantes Valerio, B50939
 
--   Leonardo Blanco Villalobos
+-   Leonardo Blanco Villalobos, B71139
 
--   David Zumbado Fernández
+-   David Zumbado Fernández, B88751
 
 ## 2- Idea
 
@@ -89,9 +89,7 @@ Los datos se conforman por 13 variables: claim_number es el identificador del re
 
 ## Sección 8. Literatura
 
-1.  **Título**: Modelling Dependencies in Airport Passenger Claim Data Using Copulas @flores
-
-    **Autor:** Roberto Carcache Flores
+1.  **Título**: Modelling Dependencies in Airport Passenger Claim Data Using Copulas @flores **Autor:** Roberto Carcache Flores
 
     **Nombre del tema**: Modelación del riesgo utilizando cópulas
 
