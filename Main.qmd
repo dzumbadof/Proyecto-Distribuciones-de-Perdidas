@@ -24,6 +24,22 @@ bibliography: references.bib
 library(ggplot2)
 ```
 
+# Bitácora 1
+
+## Punto 1
+
+## 1- Nombres de los integrantes
+
+El grupo de trabajo estará integrado por:
+
+-   Ignacio Barrantes Valerio
+
+-   Leonardo Blanco Villalobos
+
+-   David Zumbado Fernández
+
+## 2- Idea 
+
 # Intro
 
 Según @knuth84 el comportamiento mono sí existe
