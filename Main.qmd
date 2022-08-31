@@ -22,6 +22,10 @@ bibliography: references.bib
 
 ```{r}
 library(ggplot2)
+library(janitor)
+library(tidyverse)
+library(lubridate)
+library(kableExtra)
 ```
 
 # Bitácora 1
@@ -41,6 +45,53 @@ El grupo de trabajo estará integrado por:
 ## 2- Idea 
 
 # Intro
+
+## Sección 5.
+
+**Fuente de Información:**
+
+Los datos se obtuvieron del Department of Homeland Security, un organismo del gobierno de Estados Unidos y se puede encontrar en @datos
+
+```{r}
+#Se cargan y depuran los datos
+datos <- read.csv('tsa_claims.csv') %>% 
+  clean_names() #se limpian nombres columnas
+datos <- datos %>% mutate(date_received = dmy(date_received),
+                      incident_date = mdy_hm(incident_date), 
+                      claim_amount = as.numeric(gsub("\\$", "", claim_amount)),
+                      close_amount = as.numeric(gsub("\\$", "", close_amount)))
+
+```
+
+**Contexto temporal y espacial de los datos:**
+
+La base registra la ocurrencia de reclamos entre 2002 y 2015 en 466 aeropuertos alrededor de Estados Unidos.
+
+**Facilidad de obtener la información:**
+
+La base fue extraída de la página oficial del departamento de seguridad nacional la cual es accesible por cualquier persona por lo que se considera fácil de obtener.
+
+**Población de estudio:**
+
+Los aeropuertos
+
+**Muestra observada:**
+
+Aeropuertos estaunidenses donde se presentaron reclamos por daños ocasionados por seguridad.
+
+**Unidad estadística o individuos:**
+
+La unidad estadística es el registro de una ocurrencia de un reclamo.
+
+**Descripción de las variables de la tabla:**
+
+Los datos se conforman por 13 variables: claim_number es el identificador del reclamo, date_received es la fecha que se registró el reclamo, incident_date es la fecha que ocurrió el incidente que ameritó el reclamo, airport_code son las 3 letras que identifican el aeropuerto donde ocurrión el incidente, y airport_name es el nombre del aeropuerto. Claim_type es el tipo de daño ocasionado (daño a propiedad, daño a personas, entre otras), claim_site es el lugar dentro del aeropuerto donde sucedió el incidente. Item es el ítem que sufrió el daño, claim_amount es la cantidad en dólares que la persona pide, status es el estado del reclamo (se llegó a un acuerdo, se negó, etc... ), y close_amount fue el monto que efectivamente se pagó.
+
+## Sección 8. Literatura
+
+1.   David @flores
+
+# Referencias para escribir en Quarto
 
 Según @knuth84 el comportamiento mono sí existe
 
