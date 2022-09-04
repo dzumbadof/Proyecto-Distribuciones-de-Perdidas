@@ -52,11 +52,13 @@ Se buscará modelar las pérdidas ligadas al extravío de equipajes en aeropuert
 
 2.  ¿Cuáles distribuciones probabilísticas permiten modelar las pérdidas ligadas al extravío de equipajes en aeropuertos a partir de su frecuencia y severidad?
 
-3.  ¿Cuáles son los factores que afectan las pérdidas ligadas al extravío de equipajes en aeropuertos?
+3.  ¿Por qué es importante modelar las pérdidas ligadas al extravío de equipajes en aeropuertos?
 
-4.  ¿Por qué es importante modelar las pérdidas ligadas al extravío de equipajes en aeropuertos?
+4.  ¿Cuáles métodos no paramétricos pueden emplearse en la modelación de las pérdidas ligadas al extravío o daños de equipajes en aeropuertos?
 
-5.  ¿Cuáles métodos no paramétricos pueden emplearse en la modelación de las pérdidas ligadas al extravío de equipajes en aeropuertos a partir de su frecuencia y severidad?
+
+
+En la revisión de la literatura se ubican dos fuentes que emplean esta base de datos que la propuesta en la presente investigación y que persiguen el mismo objetivo, modelar la distribución de los costos de los reclamos, que son los trabajos de @flores y @chen2020aggregate. De esta manera, se comprueba que la fuente de la base de datos ha sido validada antes en investigaciones de corte académico y estrechamente relacionadas, además de estar adecuadamente referenciada y poder consultarse en @datoskelly2020data (ética). Se encontró que ambos trabajos utilizan métodos paramétricos; por esta razón, resulta de interés explorar también métodos no paramétricos alternativos que puedan llegar a usarse en el contexto de modelación de pérdidas en una aseguradora, por ejemplo (emocional). Un método no paramétrico que puede utilizarse es la estimación de densidades por medio de kernels (lógica). En @pitt2011estimation, se advierte que este método suele ser inadecuado en presencia de asimetría, por lo cual, si se llegase a comprobar dicha condición, una manera de proceder es aplicar una transformación previa a los datos, concretamente una perteneciente a la *shifted power transformation family* y aplicar la estimación por kernels a los datos transformados, obteniéndose la densidad estimada de los datos originales mediante un proceso de inversión explicado en el mismo artículo.
 
 ## Sección 5.
 
@@ -89,7 +91,7 @@ Los aeropuertos
 
 **Muestra observada:**
 
-Aeropuertos estaunidenses donde se presentaron reclamos por daños ocasionados por seguridad.
+Aeropuertos estadounidenses donde se presentaron reclamos por daños ocasionados por seguridad.
 
 **Unidad estadística o individuos:**
 
@@ -146,6 +148,29 @@ Los datos se conforman por 13 variables: claim_number es el identificador del re
     **Problemas con el argumento o el tema:**
 
     **Resumen en un párrafo**:
+
+3.  **Título**: *Estimation of Parametric and Nonparametric Models for Univariate Claim Severity Distributions - an approach using R* @pitt2011estimation
+**Autores:** David Pitt, Montserrat Guillen y Catalina Bolancé
+
+    **Nombre del tema**: Comparación de métodos paramétricos y no paramétricos apra modelar la severidad de reclamos en una aseguradora
+
+    **Forma de organizarlo**:
+
+    -   Cronológico: mayo de 2011
+
+    -   Metodológico: estimación de densidades por Kernels modificados,
+
+    -   Temático: Modelación de reclamos métidos y de seguros de automóviles
+
+    -   Teoría: Probabilidad y estadística
+
+    **Resumen en una oración**: Se encuentra que la estimación por kernels modificados es adecuada para modelar la distribución tanto de costos médicos como de reclamos en seguros de automóviles.
+
+    **Argumento central**: Se pueden usar métodos no paramétricos para estimar distribuciones de reclamos en seguros de vehículo y de costos médicos.
+
+    **Problemas con el argumento o el tema:** Los métodos clásicos de estimación de densidades por kernels suelen ser inadecaudos en presencia de asimetría, lo cual es común en datos de montos de reclamos en el contexto de seguros.
+
+    **Resumen en un párrafo**: Se utilizan datos de costos de reclamos hechos a una aseguradora española por accidentes ocurridos en el año 2000 y recopilados en 2002, que incluye tanto los ligados a costos por daños a la propiedad como por costos médicos. El tamaño de muestra es de 518 reclamos. Para estimar la densidad para cada uno de los costos (daños a la propiedad y médicos) por separado, se utilizan métodos paramétricos y no paramétricos. Dentro de los paramétricos, se utilizaron aproximaciones normales y log-normales. Dentro de los no paramétricos, se utilizó una aproximación por kernels modificada, donde la modificación consiste en que primero se aplica una transformación a los datos originales para corregir la asimetría, se hace una aproximación con un kernel gaussiano a los datos modificados, y luego se calcula la aproximación de los datos originales a partir de la calculada para los modificados. La transformación aplicada a los datos se enmarca en la *shifted power transformation family*. Para evaluar la bondad de ajuste de todas las estimaciones propuestas, se utilizan distintas versiones log-verosimilitud tanto la versión clásica como modificaciones ponderadas, mientras que para evaluar solamente los métodos no paramétricos se usan distintas versiones de una aproximación a errores cuadráticos integrados ponderados. Se concluye que la log-verosimilitud no es una buena medida de bondad de ajuste para comparar los ajustes no paramétricos, debido a su relación inversa con la magnitud del ancho de banda empleado. En general, de las propuestas paramétricas, la log-normal tuvo un mejor desempeño mientras que la estimación por kernel modificada tuvo un desempeño adecuado y se recomienda para modelar distribuciones con colas pesadas.
 
 # Referencias para escribir en Quarto
 
