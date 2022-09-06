@@ -21,11 +21,14 @@ bibliography: references.bib
 ---
 
 ```{r}
+#| warning: false
+#| echo: false
 library(ggplot2)
 library(tidyverse)
 library(lubridate)
 library(kableExtra)
 library(dplyr)
+library(janitor)
 ```
 
 # Bitácora 1
@@ -50,23 +53,28 @@ Se buscará modelar las pérdidas ligadas al extravío de equipajes en aeropuert
 
 1.  ¿Cómo se puede modelar las pérdidas ligadas al extravío de equipajes en aeropuertos a partir de su frecuencia y severidad?
 
+    **Justificaci�n:** Las p�rdidas se pueden modelar utilizando la base proveniente del departamente de seguridad nacional de Estados Unidos, quienes manejan la seguridad en m�s de 400 aeropuertos del pa�s a trav�s del TSA (transportation security Administration). De esta manera, los datos ser�an obtenidos directamente del aparato gobernamental de los Estados Unidos. Adem�s, esta base ha sido en trabajos similares como los de @flores y @chen2020aggregate (�tica). Seg�n @flores, se puede encontrar las distribuciones marginales de cada tipo de reclamo utilizando MLE, luego se pueden incorporar en un modelo de c�pulas multivariadas, y finalmente se pueden evaluar utilizando las medidas de riesgo como el VaR y el TVaR (l�gica). La cantidad de personas que se ven afectadas por extrav�os o da�os al equipaje durante el chequeo en los aeropuertos es significante y representan costos que deben ser previstos para mantener el buen funcionamiento de la empresa y para que se puedan hacer los pagos correspondientes a los afectados (emocional).
+
 2.  ¿Cuáles distribuciones probabilísticas permiten modelar las pérdidas ligadas al extravío de equipajes en aeropuertos a partir de su frecuencia y severidad?
+
+    **Justificaci�n:** La base utilizada ser�a la misma por lo que la justificaci�n �tica se mantiene. Para la parte l�gica, se puede seguir una metodolog�a parecida a la del punto anterior, sin embargo se tendr�a que hacer m�s �nfasis en la escogencia de la distribuci�n para cada variable aleatoria de p�rdida y frecuencia, y tambi�n a la hora de escoger la c�pula. En @flores, esto se hace a trav�s de la estimaci�n del MLE para diferentes distribuciones como la Poisson, Geom�trica, binomial y luego se comparan usando la prueba $\chi^2$ de bondad de ajuste para la frecuencia. Un proceso similar se lleva a cabo con la severidad, comparando Log-Laplace, Johnson SU, Log�stica generalizada y Lognormal. Un proceso similar se lleva a cabo con las c�pulas al comparar la Frank, Clayton y Gumbel utilizando la m�trica emp�rica UTDC para compararlas. Entonces Bajo esta pregunta habr�a un enf�sis m�s fuerte en la exploraci�n de estas y otras distribuciones para tratar de hallar la que mejor se ajusta en cada caso. Se puede comparar y contrastar con los hallazgos de otras personas que han hecho un trabajo similar (l�gica). La justificaci�n emocional es la misma.
 
 3.  ¿Por qué es importante modelar las pérdidas ligadas al extravío de equipajes en aeropuertos?
 
 4.  ¿Cuáles métodos no paramétricos pueden emplearse en la modelación de las pérdidas ligadas al extravío o daños de equipajes en aeropuertos?
 
-
-
-En la revisión de la literatura se ubican dos fuentes que emplean esta base de datos que la propuesta en la presente investigación y que persiguen el mismo objetivo, modelar la distribución de los costos de los reclamos, que son los trabajos de @flores y @chen2020aggregate. De esta manera, se comprueba que la fuente de la base de datos ha sido validada antes en investigaciones de corte académico y estrechamente relacionadas, además de estar adecuadamente referenciada y poder consultarse en @datoskelly2020data (ética). Se encontró que ambos trabajos utilizan métodos paramétricos; por esta razón, resulta de interés explorar también métodos no paramétricos alternativos que puedan llegar a usarse en el contexto de modelación de pérdidas en una aseguradora, por ejemplo (emocional). Un método no paramétrico que puede utilizarse es la estimación de densidades por medio de kernels (lógica). En @pitt2011estimation, se advierte que este método suele ser inadecuado en presencia de asimetría, por lo cual, si se llegase a comprobar dicha condición, una manera de proceder es aplicar una transformación previa a los datos, concretamente una perteneciente a la *shifted power transformation family* y aplicar la estimación por kernels a los datos transformados, obteniéndose la densidad estimada de los datos originales mediante un proceso de inversión explicado en el mismo artículo.
+    **Justificaci�n**: En la revisión de la literatura se ubican dos fuentes que emplean esta base de datos que la propuesta en la presente investigación y que persiguen el mismo objetivo, modelar la distribución de los costos de los reclamos, que son los trabajos de @flores y @chen2020aggregate. De esta manera, se comprueba que la fuente de la base de datos ha sido validada antes en investigaciones de corte académico y estrechamente relacionadas, además de estar adecuadamente referenciada y poder consultarse en @datoskelly2020data (ética). Se encontró que ambos trabajos utilizan métodos paramétricos; por esta razón, resulta de interés explorar también métodos no paramétricos alternativos que puedan llegar a usarse en el contexto de modelación de pérdidas en una aseguradora, por ejemplo (emocional). Un método no paramétrico que puede utilizarse es la estimación de densidades por medio de kernels (lógica). En @pitt2011estimation, se advierte que este método suele ser inadecuado en presencia de asimetría, por lo cual, si se llegase a comprobar dicha condición, una manera de proceder es aplicar una transformación previa a los datos, concretamente una perteneciente a la *shifted power transformation family* y aplicar la estimación por kernels a los datos transformados, obteniéndose la densidad estimada de los datos originales mediante un proceso de inversión explicado en el mismo artículo.
 
 ## Sección 5.
 
 **Fuente de Información:**
 
-Los datos se obtuvieron del Department of Homeland Security, un organismo del gobierno de Estados Unidos y se puede encontrar en @datos
+Los datos se obtuvieron del Departmento de Seguridad Nacional, un organismo del gobierno de Estados Unidos y se puede encontrar en @datos
 
 ```{r}
+#| warning: false
+#| echo: false
+ 
 #Se cargan y depuran los datos
 datos <- read.csv('tsa_claims.csv') %>% 
   clean_names() #se limpian nombres columnas
@@ -101,93 +109,75 @@ La unidad estadística es el registro de una ocurrencia de un reclamo.
 
 Los datos se conforman por 13 variables: claim_number es el identificador del reclamo, date_received es la fecha que se registró el reclamo, incident_date es la fecha que ocurrió el incidente que ameritó el reclamo, airport_code son las 3 letras que identifican el aeropuerto donde ocurrión el incidente, y airport_name es el nombre del aeropuerto. Claim_type es el tipo de daño ocasionado (daño a propiedad, daño a personas, entre otras), claim_site es el lugar dentro del aeropuerto donde sucedió el incidente. Item es el ítem que sufrió el daño, claim_amount es la cantidad en dólares que la persona pide, status es el estado del reclamo (se llegó a un acuerdo, se negó, etc... ), y close_amount fue el monto que efectivamente se pagó.
 
-
 ## Sección 7. Descripción detallada de la tabla de datos
 
-**Claim Number:**  Es una variable de tipo *string*   que indica el identificador del reclamo, cada vez que una persona procede a efectuar un reclamo se le  asigna este. 
+**Claim Number:** Es una variable de tipo *string* que indica el identificador del reclamo, cada vez que una persona procede a efectuar un reclamo se le asigna este.
 
-**Date Received:** Es una variable de tipo caracter, sin embargo para efectos de estudio debe ser transformada a una variable tipo fecha. El objetivo de esta variable es registrar el momento  donde se realiza el reclamo en el siguiente formato: día-mes-año.Hay un total de 263 NA , es decir donde se registro reclamo respectivo pero no así la fecha. 
-Esta variable  es importante para nuestro estudio,ya que se debe tomar en cuenta el numero de reclamos al modelar las perdidas por frecuencia. 
+**Date Received:** Es una variable de tipo caracter, sin embargo para efectos de estudio debe ser transformada a una variable tipo fecha. El objetivo de esta variable es registrar el momento donde se realiza el reclamo en el siguiente formato: día-mes-año.Hay un total de 263 NA , es decir donde se registro reclamo respectivo pero no así la fecha. Esta variable es importante para nuestro estudio,ya que se debe tomar en cuenta el numero de reclamos al modelar las perdidas por frecuencia.
 
 **Incident Date:** Se observa una diferencia de fechas desde el momento que se lleva acabo el incidente y el momento de reclamo correspondiente. Por esta razón se registra a fecha del incidente.
 
-Esta es una variable de tipo caracter , la cual para efectos de estudio  debe ser transformada a una variable tipo fecha. Esta  registra el momento en que se lleva a cabo el incidente siguiendo el siguiente formato:  día/mes/año.Hay un total de 2183 NA , es decir , se llevo a cabo el registro del reclamo pero no se tiene información de la fecha en que se llevo a cabo el incidente. 
+Esta es una variable de tipo caracter , la cual para efectos de estudio debe ser transformada a una variable tipo fecha. Esta registra el momento en que se lleva a cabo el incidente siguiendo el siguiente formato: día/mes/año.Hay un total de 2183 NA , es decir , se llevo a cabo el registro del reclamo pero no se tiene información de la fecha en que se llevo a cabo el incidente.
 
 Para efectos del modelado de la perdida por frecuencia la variable de mayor interés para nuestro estudio es la ya mencionada *Date Received*.
 
 **Airport Name:** Esta variable es una variable de tipo *string* categórica , hay un total de 466 Aeropuertos registrados en la base de datos, un total de 8524 NA y 441 reclamos donde no se especifica el nombre del Aeropuerto (se les establece el símbolo : -).
 
-En esta se registra el nombre del aeropuerto donde se lleva acabo el incidente.Esta variable aleatoria es importante , ya es posible saber cuales son aquellos aeropuertos donde se presenta mayor número de reclamos. 
+En esta se registra el nombre del aeropuerto donde se lleva acabo el incidente.Esta variable aleatoria es importante , ya es posible saber cuales son aquellos aeropuertos donde se presenta mayor número de reclamos.
 
 **Airport Code:** Los códigos de aeropuertos están formados por grupos de tres letras, que designan a cada aeropuerto del mundo y asignadas por la Asociación Internacional de Transporte Aéreo.
 
-Esta variable es de tipo caracter, y registra dicho código del aeropuerto donde se lleva a cabo el incidente por lo que aporta la misma información que la variable aleatoria *Airport Name* , para efectos del estudio es importante considerar eliminar alguna de estas dos variables.  
+Esta variable es de tipo caracter, y registra dicho código del aeropuerto donde se lleva a cabo el incidente por lo que aporta la misma información que la variable aleatoria *Airport Name* , para efectos del estudio es importante considerar eliminar alguna de estas dos variables.
 
-**Airline Name:** Es una variable que registra la aerolínea en la que viajaba la persona que sufrió el incidente. Es una variable tipo *string* categórica. Hay un total de 232 aerolíneas registradas en la base de datos, un total de 34374 NA y 4247 reclamos donde no se especifica el nombre de la aerolínea (se les establece el símbolo : -). 
+**Airline Name:** Es una variable que registra la aerolínea en la que viajaba la persona que sufrió el incidente. Es una variable tipo *string* categórica. Hay un total de 232 aerolíneas registradas en la base de datos, un total de 34374 NA y 4247 reclamos donde no se especifica el nombre de la aerolínea (se les establece el símbolo : -).
 
-Esta variable es de interés para el desarrollo de nuestro estudio ya que es importante saber cuales son las aerolíneas que presentan mayor número de reclamos, y por ende si tienen  una mayor impacto en las pérdidas. 
+Esta variable es de interés para el desarrollo de nuestro estudio ya que es importante saber cuales son las aerolíneas que presentan mayor número de reclamos, y por ende si tienen una mayor impacto en las pérdidas.
 
-**Claim type:** Esta variable es de tipo *string* categórica, la cual registra el tipo de reclamo realizado por la persona. Hay un total 10 tipos de reclamos registrados en la base de datos: 
+**Claim type:** Esta variable es de tipo *string* categórica, la cual registra el tipo de reclamo realizado por la persona. Hay un total 10 tipos de reclamos registrados en la base de datos:
 
+-   *Bus Termina* : Categoría que registra reclamos relacionados a la terminal de buses, hay un 1 reclamo.
 
-- *Bus Termina* : Categoría que registra reclamos relacionados a la terminal de buses, hay  un 1 reclamo.
+-   *Complaint*: Categoría que registra reclamaciones de forma general, hay un total de 49 reclamos.
 
-- *Complaint*: Categoría  que registra reclamaciones de forma general,  hay  un total de 49 reclamos.
+-   *Compliment*: Categoría que registra quejas de forma general, hay un total de 3 reclamos.
 
-- *Compliment*:  Categoría  que registra quejas de forma general,  hay  un total de 3 reclamos.
+-   *Employee Loss (MPCECA)*: Categoría que registra reclamos por pérdidas de empleados (MPCECA).Es decir, reclamos de perdida realizados por los mismos empleados. Hay un total de 485.
 
-- *Employee Loss (MPCECA)*:  Categoría  que registra reclamos por pérdidas de empleados (MPCECA).Es decir, reclamos de perdida realizados por los mismos empleados. Hay  un total de  485.
+-   *Motor Vehicle*: Categoría que registra reclamos asociados vehiculos automotores , hay un total de 369 reclamos.
 
-- *Motor Vehicle*:  Categoría  que registra reclamos asociados vehiculos automotores ,  hay  un total de 369 reclamos.
+-   *Passenger Property Loss* : Categoría que registra reclamos por pérdidas de bienes de los pasajeros. Esta es la categoría con mayor número de reclamos con un total de 117868 reclamos.
 
+-   *Passenger Theft*: Categoría que registra reclamos asociados robos realizados a bienes de los pasajeros , hay un total de 465 reclamos.
 
-- *Passenger Property Loss* :  Categoría que registra reclamos por pérdidas de bienes de los pasajeros. Esta es la categoría con mayor número de reclamos con  un total de 117868 reclamos.
+-   *Personal Injury* : Categoría que registra reclamos asociados a daños personales (siendo este un término legal para una lesión al cuerpo, la mente o las emociones, en contraposición a una lesión a la propiedad) hay un total de 1465 reclamos.
 
+-   *Property Damage*: Categoría que registra reclamos asociados daños a la propiedad. Esta es la segunda categoría con mayor cantidad de reclamos hay un total de 75364 reclamos.
 
-- *Passenger Theft*: Categoría  que registra reclamos asociados robos realizados a bienes de los pasajeros ,  hay  un total de 465 reclamos.
+-   *Wrongful Death*: Categoría que registra reclamos asociados a muerte por negligencia , es un reclamo contra una persona que puede ser considerada responsable de la muerte de otra persona. Hay un total de 4 reclamos.
 
+Finalmente, para esta variable hay un total de 7913 NA y 282 reclamos donde no se especifica el tipo de reclamo (se les establece el símbolo : -).
 
-- *Personal Injury* :  Categoría  que registra reclamos asociados a daños personales (siendo este un término legal para una lesión al cuerpo, la mente o las emociones, en contraposición a una lesión a la propiedad) hay  un total de 1465 reclamos.
-
-
-
-- *Property Damage*: Categoría  que registra reclamos asociados daños a la propiedad. Esta es la segunda categoría con mayor cantidad de reclamos  hay  un total de 75364 reclamos. 
-
-
-- *Wrongful Death*: Categoría que registra reclamos asociados a muerte por negligencia , es un reclamo contra una persona que puede ser considerada responsable de la muerte de otra persona. Hay un total de 4 reclamos.
-
-Finalmente, para esta variable hay un total de 7913 NA y 282 reclamos donde no se especifica el tipo de reclamo (se les establece el símbolo : -). 
-
-Esta variable es de interés , puesto que puede existir una relación directa con el monto de los reclamos , y por ende tener impacto sobre la perdida por severidad. 
+Esta variable es de interés , puesto que puede existir una relación directa con el monto de los reclamos , y por ende tener impacto sobre la perdida por severidad.
 
 **Claim Site:** Esta variable es de tipo string categórica, la cual indica el sitio del reclamo. Hay un total de 5 categorías registras para esta variable: *Bus Station* , *Checked Baggage*, *Checkpoint*, *Motor Vehicle* y otra categoría llamada *others*.
 
 Se observa que las categorías con mayor número de reclamos son: *Checked Baggage* con 159753 reclamos , y *Checkpoint* con 40133 reclamos. Además, hay un total de 740 NA y 276 reclamos donde no se especifica el nombre del Aeropuerto (se les establece el símbolo : -).
 
-**Item:**  Esta variable es de tipo *string* ,la cual se encarga de describir el motivo de reclamo (bien material perdido, daño material sufrido, daño personal).
+**Item:** Esta variable es de tipo *string* ,la cual se encarga de describir el motivo de reclamo (bien material perdido, daño material sufrido, daño personal).
 
-**Claim Amount:** Esta variable es de tipo numérico,la cual se encarga de registar el monto de reclamo.Es decir, el monto solicitado por la persona que sufrió el incidente. Hay un total de 4043 NA y  12752 reclamos donde no se especifica el monto de reclamo (se les establece el símbolo : -).
+**Claim Amount:** Esta variable es de tipo numérico,la cual se encarga de registar el monto de reclamo.Es decir, el monto solicitado por la persona que sufrió el incidente. Hay un total de 4043 NA y 12752 reclamos donde no se especifica el monto de reclamo (se les establece el símbolo : -).
 
-**Status:** Esta variable indica el estado intermedio del reclamo, es de tipo *string* categórica. Al no ser el status final del reclamo cuenta con una cantidad considerable de categorías (14 registradas en la base de datos, 5 NA y 12752 reclamos donde no se especifica el monto de reclamo donde se les establece el símbolo : -) las cuales se terminan asignando en alguna de las tres categorías de la variable *Disposition* que a continuación se describe. 
+**Status:** Esta variable indica el estado intermedio del reclamo, es de tipo *string* categórica. Al no ser el status final del reclamo cuenta con una cantidad considerable de categorías (14 registradas en la base de datos, 5 NA y 12752 reclamos donde no se especifica el monto de reclamo donde se les establece el símbolo : -) las cuales se terminan asignando en alguna de las tres categorías de la variable *Disposition* que a continuación se describe.
 
-**Disposition:** Esta variable a diferencia de *Status* muestra  la disposición , es decir el acuerdo final sobre el reclamo. Es una variable de tipo string categórica , con tres categorías: *Approve in Full*, *Deny* y *Settle*. A continuación, se describe cada una de estas:
+**Disposition:** Esta variable a diferencia de *Status* muestra la disposición , es decir el acuerdo final sobre el reclamo. Es una variable de tipo string categórica , con tres categorías: *Approve in Full*, *Deny* y *Settle*. A continuación, se describe cada una de estas:
 
+-   *Approve in Full* : Esta categoría registra aquellos reclamos cuyo *Claim Amount* (monto reclamado por la persona perjudicada) fue aprobado de forma total, es decir, el monto acordado a pagar (*Close Amount*) es igual al *Claim Amount*. Hay un total de 35010 reclamos aprobados de forma completa.
 
-- *Approve in Full* : Esta categoría registra aquellos reclamos cuyo *Claim Amount* (monto reclamado por la persona perjudicada) fue aprobado de forma total, es decir, el monto acordado a pagar (*Close Amount*) es igual al *Claim Amount*. Hay un total de 35010 reclamos aprobados de forma completa.
+-   *Deny*: Esta categoría registra los reclamos denegados, es decir aquellos reclamos donde no se paga por el reclamo. Hay un total de 68382 reclamos denegados.
 
-- *Deny*:  Esta categoría registra los reclamos denegados, es decir aquellos reclamos donde no se paga por el reclamo. Hay un total de 68382 reclamos denegados.
+-   *Settle*: En esta categoría se registran aquellos reclamos cuyo *Close Amount* (monto a pagar) , es menor al *Claim Amount* (Monto de reclamo). Es decir, son aquellos reclamos en cuyo acuerdo final se estableció un monto inferior de pago por el incidente.
 
-- *Settle*: En esta categoría se registran aquellos reclamos cuyo *Close Amount* (monto a pagar) , es menor al *Claim Amount* (Monto de reclamo). Es decir, son aquellos reclamos en cuyo acuerdo final se estableció un monto inferior de pago por el incidente.
-
-
-**Close Amount:** Esta variable es de tipo numérica, y es el monto final acordado por ambas partes.Es decir, es el monto que debe ser pagado a la persona como producto del reclamo realizado.
-Es importante señalar que este monto es igual o inferior al *Claim Amount* y depende de la variable disposición que se describió anteriormente. Esta variable es relevante para nuestro estudio pues esta relacionado de forma directa con la severidad, y por ende, con la perdida por severidad.
-
-
-
-
-
-
+**Close Amount:** Esta variable es de tipo numérica, y es el monto final acordado por ambas partes.Es decir, es el monto que debe ser pagado a la persona como producto del reclamo realizado. Es importante señalar que este monto es igual o inferior al *Claim Amount* y depende de la variable disposición que se describió anteriormente. Esta variable es relevante para nuestro estudio pues esta relacionado de forma directa con la severidad, y por ende, con la perdida por severidad.
 
 ## Sección 8. Literatura
 
@@ -213,18 +203,17 @@ Es importante señalar que este monto es igual o inferior al *Claim Amount* y de
 
     **Resumen en un párrafo**: Se eliminan los reclamos que fueron negados justificando el hecho de que el punto de la investigación es cuantificar los pagos que efectivamente fueron hechos, además del gran volumen de los datos. La agregación de los datos se hace por mes y con suma para la severidad y por frecuencia de los reclamos. El autor nota que hay un tendencia negativa de la frecuencia y severidad con respecto al tiempo por lo que procede a eliminar la tendencia. Luego determina la mejor marginal para cada variable utilizando MLE. Se encuentra que la binomial negativa se ajusta mejor a las frecuencias. Por otro lado la Log-Laplace se ajusta mejor a los reclamos por daños a la propiedad y la lognormal se ajusta mejor a los reclamos por pérdidas de los bienes por lo que se utilizan estas dos para modelar la severidad. Luego se procede a hacer algo similar con los resultados de eliminar la tendencia. Se encuentra que el proceso de eliminación de la tendencia facilita la búsqueda de una distribuciones. Se encuentra que todas las variables pares muestran algún tipo de dependencia en las colas. Finalmente, las cópulas multivariadas se comparan utilizando log verosimilitud y se obtiene que las cópulas elípticas (Gaussiana y t-Student) se ajustan mejor que las arquimedianas (Clayton y Gumbel).
 
-2.  **Título**:  Aggregate loss model with Poisson - Tweedie loss frequency @chen2020aggregate 
+2.  **Título**: Aggregate loss model with Poisson - Tweedie loss frequency @chen2020aggregate
 
-    **Autor:**  Si Chen. 
+    **Autor:** Si Chen.
 
-    **Nombre del tema**:  Modelado perdidas usando la familia de distribuciones  Poisson - Tweedie .
-
+    **Nombre del tema**: Modelado perdidas usando la familia de distribuciones Poisson - Tweedie .
 
     **Forma de organizarlo**:
 
     -   Cronológico: Año 2020.
- 
-    -   Metodológico: Modelado de la frecuencia de perdida a partir de una distribución  Poisson-Tweedie , simulaciones y modelado de perdida agregada. 
+
+    -   Metodológico: Modelado de la frecuencia de perdida a partir de una distribución Poisson-Tweedie , simulaciones y modelado de perdida agregada.
 
     -   Temático: Modelos de perdida agregada.
 
@@ -232,16 +221,13 @@ Es importante señalar que este monto es igual o inferior al *Claim Amount* y de
 
     **Resumen en una oración**: Uso de la familia de distribuciones Poisson-Tweedie con la finalidad de modelar la frecuencia de las perdidas y ver el impacto que tiene este sobre el modelo de perdidas agregadas.
 
-    **Argumento central**: Pese a que el impacto de la perdida por severidad en un modelo de perdida agregada  ha sido bien estudiado a través de los años, se ha prestado menos atención a la influencia de la perdida por frecuencia en dichos modelos, esto motiva el estudio de un modelo de perdidas por frecuencias no tradicional.
+    **Argumento central**: Pese a que el impacto de la perdida por severidad en un modelo de perdida agregada ha sido bien estudiado a través de los años, se ha prestado menos atención a la influencia de la perdida por frecuencia en dichos modelos, esto motiva el estudio de un modelo de perdidas por frecuencias no tradicional.
 
-    **Problemas con el argumento o el tema:** Dado el estudio , no se pudo captar por completo las relaciones entre las perdidas por severidad , perdida por frecuencia y perdida agregada. 
+    **Problemas con el argumento o el tema:** Dado el estudio , no se pudo captar por completo las relaciones entre las perdidas por severidad , perdida por frecuencia y perdida agregada.
 
+    **Resumen en un párrafo**: En este estudio, se modela la perdida por frecuencia usando la familia de distribuciones Poisson-Tweedie, esto bajo el argumento que dichas familias presentan características como: el ajuste de la frecuencia de pérdidas es más flexible , reducen la posibilidad de una especificación errónea del modelo y dichas familias presentan una convolución cerrada. Mediante estudios de simulación , se investiga y encuentra el impacto de una mala especificación de la distribución perdida de la frecuencia al cuantil de perdidas agregadas, así como el sesgo del estimador de máxima verosimilitud del índice de la familia de Poisson-Tweedie.
 
-    **Resumen en un párrafo**: En este estudio, se modela la perdida por frecuencia usando la familia de distribuciones Poisson-Tweedie, esto bajo el argumento que dichas familias presentan características como: el  ajuste de la frecuencia de pérdidas es más flexible , reducen la posibilidad de una especificación errónea del modelo y dichas familias presentan una convolución cerrada. Mediante estudios de simulación , se investiga y encuentra el impacto de una mala especificación de la distribución perdida de la frecuencia al cuantil de perdidas agregadas, así como  el  sesgo  del estimador de máxima verosimilitud del índice de la familia de Poisson-Tweedie. 
-    
-
-3.  **Título**: *Estimation of Parametric and Nonparametric Models for Univariate Claim Severity Distributions - an approach using R* @pitt2011estimation
-**Autores:** David Pitt, Montserrat Guillen y Catalina Bolancé
+3.  **Título**: *Estimation of Parametric and Nonparametric Models for Univariate Claim Severity Distributions - an approach using R* @pitt2011estimation **Autores:** David Pitt, Montserrat Guillen y Catalina Bolancé
 
     **Nombre del tema**: Comparación de métodos paramétricos y no paramétricos apra modelar la severidad de reclamos en una aseguradora
 
