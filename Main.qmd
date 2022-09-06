@@ -63,7 +63,7 @@ Se buscará modelar las pérdidas ligadas al extravío de equipajes en aeropuert
 
  **Justificación**:
 
-En general, el modelado de las pérdidas es de vital importancia ya que permite a las empresas, entidades financieras  y aseguradoras a tener reservas para lograr mitigar el impacto de estas.Tal y como establece (REF) para las aseguradoras poder liquidar los siniestros que puedan llegar a producirse es fundamental, por lo que es imperativo que se modele adecuadamente los datos históricos y actuales sobre la experiencia de los siniestros, permitiendo de esta forma proyectar las experiencia de los siniestros futuros esperados y establecer reservas suficientes.
+En general, el modelado de las pérdidas es de vital importancia ya que permite a las empresas, entidades financieras  y aseguradoras a tener reservas para lograr mitigar el impacto de estas.Tal y como establece @cyprian  para las aseguradoras poder liquidar los siniestros que puedan llegar a producirse es fundamental, por lo que es imperativo que se modele adecuadamente los datos históricos y actuales sobre la experiencia de los siniestros, permitiendo de esta forma proyectar las experiencia de los siniestros futuros esperados y establecer reservas suficientes.
 
 Los métodos estadísticos ha implementar serían iguales o similares a los mencionados en las propuestas anteriores de investigación. No obstante, en esta propuesta el enfoque es el de comparar el impacto positivo (importancia) en las finanzas del ente responsable de llevar a cabo los pagos por reclamos al contar con un modelo que le permita poseer reservas para ser frente a dichos pagos, en contraste con la de no hacer un estudio de pérdidas (lógico). 
 
