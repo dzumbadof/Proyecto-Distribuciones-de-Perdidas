@@ -4,6 +4,7 @@ subtitle: Not used
 author:
   - name: Not used
 editor: source
+lang: es
 format:
   pdf:
     documentclass: scrbook
@@ -51,29 +52,35 @@ Se buscará modelar las pérdidas ligadas al extravío de equipajes en aeropuert
 
 ## 3- Reformulación de la idea de investigación
 
-1.  ¿Cómo se puede modelar las pérdidas ligadas al extravío de equipajes en aeropuertos a partir de su frecuencia y severidad?
+1.¿Cómo se puede modelar las pérdidas ligadas al extravío de equipajes en aeropuertos a partir de su frecuencia y severidad?
 
-    **Justificaci?n:** Las p?rdidas se pueden modelar utilizando la base proveniente del departamente de seguridad nacional de Estados Unidos, quienes manejan la seguridad en m?s de 400 aeropuertos del pa?s a trav?s del TSA (transportation security Administration). De esta manera, los datos ser?an obtenidos directamente del aparato gobernamental de los Estados Unidos. Adem?s, esta base ha sido en trabajos similares como los de @flores y @chen2020aggregate (?tica). Seg?n @flores, se puede encontrar las distribuciones marginales de cada tipo de reclamo utilizando MLE, luego se pueden incorporar en un modelo de c?pulas multivariadas, y finalmente se pueden evaluar utilizando las medidas de riesgo como el VaR y el TVaR (l?gica). La cantidad de personas que se ven afectadas por extrav?os o da?os al equipaje durante el chequeo en los aeropuertos es significante y representan costos que deben ser previstos para mantener el buen funcionamiento de la empresa y para que se puedan hacer los pagos correspondientes a los afectados (emocional).
+**Justificación:**
 
-2.  ¿Cuáles distribuciones probabilísticas permiten modelar las pérdidas ligadas al extravío de equipajes en aeropuertos a partir de su frecuencia y severidad?
+Las pérdidas se pueden modelar utilizando la base proveniente del departamente de seguridad nacional de Estados Unidos, quienes manejan la seguridad en més de 400 aeropuertos del paés a través del TSA (transportation security Administration). De esta manera, los datos seréan obtenidos directamente del aparato gobernamental de los Estados Unidos. Ademés, esta base ha sido en trabajos similares como los de \@flores y \@chen2020aggregate (ética). Segén \@flores, se puede encontrar las distribuciones marginales de cada tipo de reclamo utilizando MLE, luego se pueden incorporar en un modelo de cépulas multivariadas, y finalmente se pueden evaluar utilizando las medidas de riesgo como el VaR y el TVaR (lógica). La cantidad de personas que se ven afectadas por extravéos o daéos al equipaje durante el chequeo en los aeropuertos es significante y representan costos que deben ser previstos para mantener el buen funcionamiento de la empresa y para que se puedan hacer los pagos correspondientes a los afectados (emocional).
 
-    **Justificación:** La base utilizada sería la misma por lo que la justificación ética se mantiene. Para la parte lógica , se puede seguir una metodología?a parecida a la del punto anterior, sin embargo se tendrá que hacer más énfasis en la escogencia de la distribución para cada variable aleatoria de pérdida y frecuencia, y también a la hora de escoger la cópula. En @flores, esto se hace a través de la estimación del MLE para diferentes distribuciones como la Poisson, Geométrica, binomial y luego se comparan usando la prueba $\chi^2$ de bondad de ajuste para la frecuencia. Un proceso similar se lleva a cabo con la severidad, comparando Log-Laplace, Johnson SU, Logística generalizada y Lognormal. Un proceso similar se lleva a cabo con las cópulas al comparar la Frank, Clayton y Gumbel utilizando la métrica empírica  UTDC para compararlas. Entonces bajo esta pregunta habrá un énfasis más fuerte en la exploración de estas y otras distribuciones para tratar de hallar la que mejor se ajusta en cada caso. Se puede comparar y contrastar con los hallazgos de otras personas que han hecho un trabajo similar (lógica). La justificación emocional es la misma.
-3.  ¿Por qué es importante modelar las pérdidas ligadas al extravío de equipajes en aeropuertos?
+2.¿Cuáles distribuciones probabilísticas permiten modelar las pérdidas ligadas al extravío de equipajes en aeropuertos a partir de su frecuencia y severidad?
 
- **Justificación**:
+**Justificación**:
 
-En general, el modelado de las pérdidas es de vital importancia ya que permite a las empresas, entidades financieras  y aseguradoras a tener reservas para lograr mitigar el impacto de estas.Tal y como establece @cyprian  para las aseguradoras poder liquidar los siniestros que puedan llegar a producirse es fundamental, por lo que es imperativo que se modele adecuadamente los datos históricos y actuales sobre la experiencia de los siniestros, permitiendo de esta forma proyectar las experiencia de los siniestros futuros esperados y establecer reservas suficientes.
+La base utilizada sería la misma por lo que la justificación ética se mantiene. Para la parte lógica , se puede seguir una metodologíaéa parecida a la del punto anterior, sin embargo se tendrá que hacer más énfasis en la escogencia de la distribución para cada variable aleatoria de pérdida y frecuencia, y también a la hora de escoger la cópula. En \@flores, esto se hace a través de la estimación del MLE para diferentes distribuciones como la Poisson, Geométrica, binomial y luego se comparan usando la prueba \$\\chi\^2\$ de bondad de ajuste para la frecuencia. Un proceso similar se lleva a cabo con la severidad, comparando Log-Laplace, Johnson SU, Logística generalizada y Lognormal. Un proceso similar se lleva a cabo con las cópulas al comparar la Frank, Clayton y Gumbel utilizando la métrica empírica UTDC para compararlas. Entonces bajo esta pregunta habrá un énfasis más fuerte en la exploración de estas y otras distribuciones para tratar de hallar la que mejor se ajusta en cada caso. Se puede comparar y contrastar con los hallazgos de otras personas que han hecho un trabajo similar (lógica). La justificación emocional es la misma.
 
-Los métodos estadísticos ha implementar serían iguales o similares a los mencionados en las propuestas anteriores de investigación. No obstante, en esta propuesta el enfoque es el de comparar el impacto positivo (importancia) en las finanzas del ente responsable de llevar a cabo los pagos por reclamos al contar con un modelo que le permita poseer reservas para ser frente a dichos pagos, en contraste con la de no hacer un estudio de pérdidas (lógico). 
+3.¿Por qué es importante modelar las pérdidas ligadas al extravío de equipajes en aeropuertos?
 
-Los datos fueron tomados de una base de datos reales, esta proviene de  US Terminal Security Agency (TSA) la cual registra los reclamos efectuados por los usuarios del transporte aéreo en US. Esta base de datos ha sido ampliamente usada en diversos estudios entre ellos los de @flores y @chen2020aggregate confirmando así la validez de los datos. Con el fin de verificar los resultados obtenidos, se aplicaran medidas y pruebas estadísticas (ética). 
+**Justificación**:
 
-En particular, poder contar con un modelo que permita modelar las pérdidas  para hacer frente a los reclamos ligados a extravíos de equipajes en aeropuertos permitiría al ente responsable hacer frente con dichos montos de reclamo al contar con la reserva suficiente (emocional). 
+En general, el modelado de las pérdidas es de vital importancia ya que permite a las empresas, entidades financieras y aseguradoras a tener reservas para lograr mitigar el impacto de estas.Tal y como establece @cyprian para las aseguradoras poder liquidar los siniestros que puedan llegar a producirse es fundamental, por lo que es imperativo que se modele adecuadamente los datos históricos y actuales sobre la experiencia de los siniestros, permitiendo de esta forma proyectar las experiencia de los siniestros futuros esperados y establecer reservas suficientes.
 
+Los métodos estadísticos ha implementar serían iguales o similares a los mencionados en las propuestas anteriores de investigación. No obstante, en esta propuesta el enfoque es el de comparar el impacto positivo (importancia) en las finanzas del ente responsable de llevar a cabo los pagos por reclamos al contar con un modelo que le permita poseer reservas para ser frente a dichos pagos, en contraste con la de no hacer un estudio de pérdidas (lógico).
 
-4.  ¿Cuáles métodos no paramétricos pueden emplearse en la modelación de las pérdidas ligadas al extravío o daños de equipajes en aeropuertos?
+Los datos fueron tomados de una base de datos reales, esta proviene de US Terminal Security Agency (TSA) la cual registra los reclamos efectuados por los usuarios del transporte aéreo en US. Esta base de datos ha sido ampliamente usada en diversos estudios entre ellos los de @flores y @chen2020aggregate confirmando así la validez de los datos. Con el fin de verificar los resultados obtenidos, se aplicaran medidas y pruebas estadísticas (ética).
 
-    **Justificaci?n**: En la revisión de la literatura se ubican dos fuentes que emplean esta base de datos que la propuesta en la presente investigación y que persiguen el mismo objetivo, modelar la distribución de los costos de los reclamos, que son los trabajos de @flores y @chen2020aggregate. De esta manera, se comprueba que la fuente de la base de datos ha sido validada antes en investigaciones de corte académico y estrechamente relacionadas, además de estar adecuadamente referenciada y poder consultarse en @datoskelly2020data (ética). Se encontró que ambos trabajos utilizan métodos paramétricos; por esta razón, resulta de interés explorar también métodos no paramétricos alternativos que puedan llegar a usarse en el contexto de modelación de pérdidas en una aseguradora, por ejemplo (emocional). Un método no paramétrico que puede utilizarse es la estimación de densidades por medio de kernels (lógica). En @pitt2011estimation, se advierte que este método suele ser inadecuado en presencia de asimetría, por lo cual, si se llegase a comprobar dicha condición, una manera de proceder es aplicar una transformación previa a los datos, concretamente una perteneciente a la *shifted power transformation family* y aplicar la estimación por kernels a los datos transformados, obteniéndose la densidad estimada de los datos originales mediante un proceso de inversión explicado en el mismo artículo.
+En particular, poder contar con un modelo que permita modelar las pérdidas para hacer frente a los reclamos ligados a extravíos de equipajes en aeropuertos permitiría al ente responsable hacer frente con dichos montos de reclamo al contar con la reserva suficiente (emocional).
+
+4.¿Cuáles métodos no paramétricos pueden emplearse en la modelación de las pérdidas ligadas al extravío o daños de equipajes en aeropuertos?
+
+**Justificación:**
+
+En la revisión de la literatura se ubican dos fuentes que emplean esta base de datos que la propuesta en la presente investigación y que persiguen el mismo objetivo, modelar la distribución de los costos de los reclamos, que son los trabajos de \@flores y \@chen2020aggregate. De esta manera, se comprueba que la fuente de la base de datos ha sido validada antes en investigaciones de corte académico y estrechamente relacionadas, además de estar adecuadamente referenciada y poder consultarse en \@datoskelly2020data (ética). Se encontró que ambos trabajos utilizan métodos paramétricos; por esta razón, resulta de interés explorar también métodos no paramétricos alternativos que puedan llegar a usarse en el contexto de modelación de pérdidas en una aseguradora, por ejemplo (emocional). Un método no paramétrico que puede utilizarse es la estimación de densidades por medio de kernels (lógica). En \@pitt2011estimation, se advierte que este método suele ser inadecuado en presencia de asimetría, por lo cual, si se llegase a comprobar dicha condición, una manera de proceder es aplicar una transformación previa a los datos, concretamente una perteneciente a la \*shifted power transformation family\* y aplicar la estimación por kernels a los datos transformados, obteniéndose la densidad estimada de los datos originales mediante un proceso de inversión explicado en el mismo artículo.
 
 ## Sección 5.
 
@@ -105,7 +112,7 @@ La base fue extraída de la página oficial del departamento de seguridad nacion
 
 **Población de estudio:**
 
-Los aeropuertos
+Los aeropuertos de Estados Unidos
 
 **Muestra observada:**
 
@@ -118,6 +125,20 @@ La unidad estadística es el registro de una ocurrencia de un reclamo.
 **Descripción de las variables de la tabla:**
 
 Los datos se conforman por 13 variables: claim_number es el identificador del reclamo, date_received es la fecha que se registró el reclamo, incident_date es la fecha que ocurrió el incidente que ameritó el reclamo, airport_code son las 3 letras que identifican el aeropuerto donde ocurrión el incidente, y airport_name es el nombre del aeropuerto. Claim_type es el tipo de daño ocasionado (daño a propiedad, daño a personas, entre otras), claim_site es el lugar dentro del aeropuerto donde sucedió el incidente. Item es el ítem que sufrió el daño, claim_amount es la cantidad en dólares que la persona pide, status es el estado del reclamo (se llegó a un acuerdo, se negó, etc... ), y close_amount fue el monto que efectivamente se pagó.
+
+## 6. UVE Heurística
+
+**Objeto de estudio:** El mal manejo de los equipajes o las personas durante el chequeo de seguridad en los aeropuertos es un evento común y que en casos suele culminar en pagos por reclamos, lo cuales representan pérdidas las cuales deben ser cuantificadas.
+
+**conceptos que delimitan la pregunta:**
+
+1.  Modelo: Según @RAE, un modelo es un esquema teórico, generalmente en forma matemática, de un sistema o de una realidad compleja, (...) que se elabora pra facilitar la compresión y el estudio de un comportamiento.
+
+2.  Frecuencia: Según @RAE, es el número de veces que se repite un proceso periódico por u nidad de tiempo
+
+3.  Severidad: Según @ortegametodologia, la severidad es la pérdida económica que enfrentará la empresa o institución financiera producto de sus actividades.
+
+![Borrador de la UVE Heurística](Images/UVE%20Maik.png){fig-align="center" width="701"}
 
 ## Sección 7. Descripción detallada de la tabla de datos
 
