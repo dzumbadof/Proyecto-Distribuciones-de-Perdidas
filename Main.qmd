@@ -140,7 +140,7 @@ Los datos se conforman por 13 variables: claim_number es el identificador del re
 
 3.  Severidad: Según @ortegametodologia, la severidad es la pérdida económica que enfrentará la empresa o institución financiera producto de sus actividades.
 
-![Borrador de la UVE Heurística](Images/UVE%20Maik.png){fig-align="center" width="701"}
+![Borrador de la UVE Heurística](Images/UVE%20Maik.png){fig-align="center" width="600"}
 
 ## Sección 7. Descripción detallada de la tabla de datos
 
