@@ -326,12 +326,12 @@ Una vez ajustas las distribuciones a los datos y estimados los parámetros es po
 
 Una prueba de bondad de ajuste es "un procedimiento estadístico que describe qué tan bien se ajusta una distribución a un conjunto de observaciones mediante la medición de la compatibilidad cuantificable entre las distribuciones teóricas estimadas y la distribución empírica de los datos muestrales" [@cyprian]. Estas pruebas se pueden basar en la función de densidad o masa o en la función de distribución y adoptan la siguiente estructura de prueba de hipótesis:
 
-$$
-\begin{align}
-H_{0} &: \quad \text{Los datos siguen una distribución particular}\\
-H_{1} &: \quad \text{Los datos no siguen dicha distribución particular}.
-\end{align}
-$$
+<!-- $$ -->
+<!-- \begin{align} -->
+<!-- H_{0} &: \quad \text{Los datos siguen una distribución particular}\\ -->
+<!-- H_{1} &: \quad \text{Los datos no siguen dicha distribución particular}. -->
+<!-- \end{align} -->
+<!-- $$ -->
 
 Se presenta ahora una idea general de las tres pruebas de bondad de ajuste que se proponen para este análisis:
 
@@ -343,21 +343,29 @@ Se presenta ahora una idea general de las tres pruebas de bondad de ajuste que s
 
 En las bitácoras posteriores se ampliará en los aspectos técnicos de las pruebas anteriormente mencionadas.
 
-# Parte de escritura
+## Parte de escritura
 
-## Sección 1. Escogencia de la pregunta de investigación
+### Sección 1. Escogencia de la pregunta de investigación
 
 La pregunta seleccionada es la primera: *¿Cómo se puede modelar las pérdidas ligadas a los daños a la propiedad y a las personas en aeropuertos a partir de su frecuencia y severidad?*
 
 Se cambió "extravío de equipajes" por "daños a la propiedad y a las personas" para poder abarcar el resto de eventos que aparecen en la base de datos.
 
-## Sección 2. Propuesta de argumentación
+### Sección 2. Propuesta de argumentación
 
 En general, el modelado de las pérdidas es de vital importancia ya que permite a las empresas, entidades financieras y aseguradoras tener reservas para lograr mitigar el impacto de dichas pérdidas. Tal y como establece @cyprian, para las aseguradoras poder liquidar los siniestros que puedan llegar a producirse esto es fundamental, por lo que es imperativo que se modelice adecuadamente los datos históricos y actuales sobre la experiencia de los siniestros, permitiendo de esta forma proyectar las experiencia de los siniestros futuros esperados y establecer reservas suficientes.
 
 Una forma de realizar este ejercicio de modelación es utilizando una base proveniente del Departamento de Seguridad Nacional de Estados Unidos, quienes manejan la seguridad en más de 400 aeropuertos de dicho país a través de TSA (Transportation Security Administration). En la revisión de la literatura se ubican dos fuentes que emplean esta base de datos y que persiguen objetivos similares, que son los trabajos de @flores y @chen2020aggregate. De esta manera, se comprueba que la fuente de la base de datos ha sido validada antes en investigaciones de corte académico y estrechamente relacionadas con el tema del presente escrito, además de estar adecuadamente referenciada y poder consultarse en @kelly2020data.
 
 Para contestar la pregunta de investigación, se propone seguir el procedimiento adoptado en @cyprian, en el se parte de un grupo de distribuciones continuas para la modelización de la severidad (Exponencial, Gamma, Pareto, Lognormal y Weibull) y otro de distribuciones discretas para la modelización de la frecuencia (Binomial, Geométrica, Binomial Negativa, Poisson), donde los parámetros se estiman por máxima verosimilitud y los ajustes se miden con pruebas Chi-Cuadrado (para la frecuencia) y Kolmogorov-Smirnov y Anderson-Darling (para la severidad). También, en dicha investigación se usa el Criterio de Información de Akaike (AIC) y el Criterio de Información Bayesiano (BIC) para determinar el mejor modelo de los no descartados con las pruebas anteriores. Adicionalmente, se contempla incorporar distribuciones truncadas y modificadas en búsqueda de ajustes superiores. 
+
+### Sección 3. Resumen del problema hasta el momento. 
+
+El TSA (Transportation Security Administration) es la agencia establecida luego del 2001 que se ocupa del chequeo de los pasajeros y su equipaje en los aeropuertos de Estados Unidos. Como consecuencia de sus labores, es común que se causen daños y extravíos de las pertenencias de los pasajeros lo que resulta en reclamos por parte de los mismos en la forma de devolverles parcialm o completamente el valor de los daños ocasionados. Estas pagos han sido registrados en la tabla que se utilizará para esta investigación. El propósito de este trabajo será el de modelar estas pérdidas para lograr cuantificar estas pérdidas. Esto es importante pues el TSA tiene que tener previsto estos costos para poder continuar sus operaciones, y los pasajeros que sí son víctimas del mal manejo de sus pertenencias puedan conseguir su dinero. 
+
+Al consultar la literatura se ha visto que este es un problema que ha sido tratado por al menos dos trabajos anteriores en los cuales se basará este trabajo con el fin de expandir y poder comparar y contrastar los resultados que se obtienen con los de ellos. En general se han identificados varios pasos que se deberán seguir para poder lograr el cometido. Primero se busca la densidad a apropiada para la frecuencia y severidad por separado mediante la estimación del parámetro MLE. Las densidad candidatas para la frecuencia son la binomial negativa, geométrica Poisson y binomial. Por otro lado, las candidatas para la densidad de la severidad son la log-normal, log-laplace, Johnson SU y la logística generalizada. La bondad de ajuste para comparar las distribuciones anteriores se lleva a cabo utilizando pruebas como la chi cuadrado, Kolmogorov-Smirnov y Anderson Darling. 
+
+Una vez obtenidas las distribuciones se deben unir en un modelo agregada que represente las pérdidas totales utilizando cópulas. Algunos ejemplos de los utilizados son la Clayton y la Gumbel. Estas son comparadas mediante la utilización de medida empírica UTDC para escoger la más apropiada para el problema en cuestión. Otra observación importante es que algunos autores noten que existe una tendencia de las pérdidas con respecto al tiempo por lo que el primer paso en realidad es la eliminación de dicha tendencia. Este paso puede ser importante pues notan que al comparar el proceso descrito anteriormente al haber eliminado la tendencia proporcionaba mejores resultados. 
 
 
 # Referencias
