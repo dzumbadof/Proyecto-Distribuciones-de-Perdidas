@@ -324,14 +324,8 @@ Una vez ajustas las distribuciones a los datos y estimados los parámetros es po
 
 **Elección de los modelos de frecuencia y severidad:**
 
-Una prueba de bondad de ajuste es "un procedimiento estadístico que describe qué tan bien se ajusta una distribución a un conjunto de observaciones mediante la medición de la compatibilidad cuantificable entre las distribuciones teóricas estimadas y la distribución empírica de los datos muestrales" [@cyprian]. Estas pruebas se pueden basar en la función de densidad o masa o en la función de distribución y adoptan la siguiente estructura de prueba de hipótesis:
+Una prueba de bondad de ajuste es "un procedimiento estadístico que describe qué tan bien se ajusta una distribución a un conjunto de observaciones mediante la medición de la compatibilidad cuantificable entre las distribuciones teóricas estimadas y la distribución empírica de los datos muestrales" [@cyprian]. Estas pruebas se pueden basar en la función de densidad o masa o en la función de distribución y adoptan la estructura de prueba de hipótesis donde la hipótesis nula consiste en que los datos siguen una distribución particular, mientras que la alternativa en que los datos no siguen dicha distribución particular.
 
-<!-- $$ -->
-<!-- \begin{align} -->
-<!-- H_{0} &: \quad \text{Los datos siguen una distribución particular}\\ -->
-<!-- H_{1} &: \quad \text{Los datos no siguen dicha distribución particular}. -->
-<!-- \end{align} -->
-<!-- $$ -->
 
 Se presenta ahora una idea general de las tres pruebas de bondad de ajuste que se proponen para este análisis:
 
