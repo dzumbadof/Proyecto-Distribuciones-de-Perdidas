@@ -38,6 +38,8 @@ library(janitor)
 
 ## Sección 1.
 
+Para esta bitácora hemos estado usando rmarkdown y por alguna razón no está renderizando bien el signo de pregunta invertido. Estamos concientes del problema y en proceso de solucionarlo.  
+
 ## 1- Nombres de los integrantes
 
 El grupo de trabajo estará integrado por:
@@ -114,11 +116,11 @@ La base fue extraída de la página oficial del departamento de seguridad nacion
 
 **Población de estudio:**
 
-Los aeropuertos de Estados Unidos
+Los reclamos realizados a aeropuertos de Estados Unidos.
 
 **Muestra observada:**
 
-Aeropuertos estadounidenses donde se presentaron reclamos por daños ocasionados por seguridad.
+Reclamos registrados por el TSA por daños realizados a los pasasjeros durante los chequeos de seguridad en Aeropuertos estadounidenses.
 
 **Unidad estadística o individuos:**
 
