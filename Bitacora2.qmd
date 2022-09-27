@@ -1,0 +1,26 @@
+---
+title: "Bitácora 2"
+format: pdf
+editor: source
+---
+
+```{r echo=FALSE}
+library(readxl)
+library(kableExtra)
+```
+
+# Ordenamiento de la literatura
+
+```{r, echo=F}
+
+tabla <- read_excel("Archivos auxiliares/Ordenamiento de la literatura.xlsx")
+
+tabla %>%
+  kbl(caption = "Ordenamiento de la literautra") %>%
+  kable_styling() %>%
+  kable_classic_2(full_width = T) %>% 
+   row_spec(0, bold = T)
+
+rm(tabla)
+```
+
