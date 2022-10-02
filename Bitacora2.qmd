@@ -259,7 +259,7 @@ dfAerolineasSeveridad <- dfAerolineasSeveridad[2:6,]
 
 
 
-graficoAerolineasSeveridad <-  ggplot(data = dfAerolineasSeveridad, aes(x= airline_name, y= s , fill= airline_name ) ) + geom_bar(stat="identity") +  labs(y = 'Monto  promedio pagado ', x= "Aerolíneas") + guides(fill = guide_legend(title = "Aerolínea"))
+graficoAerolineasSeveridad <-  ggplot(data = dfAerolineasSeveridad, aes(x= airline_name, y= s , fill= airline_name ) ) + geom_bar(stat="identity") +  labs(y = 'Monto  promedio pagado ', x= "Aerolíneas") + guides(fill = guide_legend(title = "Aerolínea")) + ggtitle("Aerolíneas con mayor monto  promedio pagado ") 
 
 
 
@@ -269,7 +269,8 @@ graficoAerolineasSeveridad
 
 library(cowplot)
 
-graficoAerolineasSeveridad <-  graficoAerolineasSeveridad +  theme_cowplot(8)
+graficoAerolineasSeveridad <-  graficoAerolineasSeveridad +  theme_cowplot(8) +  theme(plot.title=element_text(hjust=0.5),
+          plot.subtitle=element_text(hjust=0.5))
 
  graficoAerolineasSeveridad
 
@@ -290,7 +291,7 @@ dfReclamosSeveridad <- dfReclamosSeveridad[1:5,]
 
  dfReclamosSeveridad$claim_type[3] <- "No especifica"
 
-graficoReclamosSeveridad <-  ggplot(data = dfReclamosSeveridad, aes(x= claim_type, y= s , fill= claim_type) ) + geom_bar(stat="identity") +  labs(y = 'Monto promedio pagado ', x= "Tipos de reclamo ") + guides(fill = guide_legend(title = "Tipo de reclamo"))
+graficoReclamosSeveridad <-  ggplot(data = dfReclamosSeveridad, aes(x= claim_type, y= s , fill= claim_type) ) + geom_bar(stat="identity") +  labs(y = 'Monto promedio pagado ', x= "Tipos de reclamo ") + guides(fill = guide_legend(title = "Tipo de reclamo"))  + ggtitle("Tipos de reclamos con mayor monto  promedio pagado ") 
 
 
 
@@ -300,7 +301,8 @@ graficoReclamosSeveridad
 
 library(cowplot)
 
-graficoReclamosSeveridad <-  graficoReclamosSeveridad +  theme_cowplot(8)
+graficoReclamosSeveridad <-  graficoReclamosSeveridad +  theme_cowplot(8) + theme(plot.title=element_text(hjust=0.5),
+          plot.subtitle=element_text(hjust=0.5))
 
  graficoReclamosSeveridad
 
