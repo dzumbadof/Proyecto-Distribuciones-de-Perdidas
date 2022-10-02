@@ -176,6 +176,27 @@ kable(df2) %>% kable_styling(full_width = FALSE)
 ```
 
 
+```{r}
+#| cap-location: top
+#| fig-cap: "Aerolíneas con mayor conteo de reclamos"
+
+
+dfConteoAerolineas <- datos %>% group_by( airline_name ) %>% summarise(n = n())
+#Se ordena segun cantidad de conteos.
+dfConteoAerolineas <-  dfConteoAerolineas[order(dfConteoAerolineas$n, decreasing = T), ]
+
+#Se toman las 10 Aerolíneas con mayor conteo de reclamos.
+
+dfConteoAerolineas <- dfConteoAerolineas[2:11,]
+
+
+colnames( dfConteoAerolineas ) <- c("Aerolínea ", "Ocurrencias")
+
+kable(dfConteoAerolineas) %>% kable_styling(full_width = FALSE)
+```
+
+
+
 
 # Gráficos
 
@@ -222,6 +243,77 @@ ggplot(df3, aes( x=t, y = s)) + geom_point(color='red', size=2) +
   xlab("Tiempo") + ylab("Severidad promedio")+
   theme_minimal()
 ```
+
+```{r}
+#En este caso graficamos aquellas 5  aerolineas con  mayor monto pagado promedio 
+
+ dfAerolineasSeveridad<- datos %>% group_by(airline_name) %>%
+  summarise(s = mean(close_amount, na.rm = TRUE), conteoReclamos =n())
+
+
+#Se ordena de forma descendente por monto total reclamado.
+dfAerolineasSeveridad <- dfAerolineasSeveridad[order(dfAerolineasSeveridad$s, decreasing = T),]
+#Se toman las 5 aerolineas con mayor monto de reclamos promedio.
+
+dfAerolineasSeveridad <- dfAerolineasSeveridad[2:6,]
+
+
+
+graficoAerolineasSeveridad <-  ggplot(data = dfAerolineasSeveridad, aes(x= airline_name, y= s , fill= airline_name ) ) + geom_bar(stat="identity") +  labs(y = 'Monto  promedio pagado ', x= "Aerolíneas") + guides(fill = guide_legend(title = "Aerolínea"))
+
+
+
+
+graficoAerolineasSeveridad
+
+
+library(cowplot)
+
+graficoAerolineasSeveridad <-  graficoAerolineasSeveridad +  theme_cowplot(8)
+
+ graficoAerolineasSeveridad
+
+```
+```{r}
+
+#En este caso graficamos aquellas 5 tipos de reclamo con  mayor monto pagado promedio 
+
+ dfReclamosSeveridad<- datos %>% group_by(claim_type) %>%
+  summarise(s = mean(close_amount, na.rm = TRUE), conteoReclamos =n())
+
+
+#Se ordena de forma descendente por monto total reclamado.
+dfReclamosSeveridad <- dfReclamosSeveridad[order(dfReclamosSeveridad$s, decreasing = T),]
+#Se toman las 5 aerolineas con mayor monto de reclamos promedio.
+
+dfReclamosSeveridad <- dfReclamosSeveridad[1:5,]
+
+ dfReclamosSeveridad$claim_type[3] <- "No especifica"
+
+graficoReclamosSeveridad <-  ggplot(data = dfReclamosSeveridad, aes(x= claim_type, y= s , fill= claim_type) ) + geom_bar(stat="identity") +  labs(y = 'Monto promedio pagado ', x= "Tipos de reclamo ") + guides(fill = guide_legend(title = "Tipo de reclamo"))
+
+
+
+
+graficoReclamosSeveridad
+
+
+library(cowplot)
+
+graficoReclamosSeveridad <-  graficoReclamosSeveridad +  theme_cowplot(8)
+
+ graficoReclamosSeveridad
+
+
+
+
+```
+
+
+
+
+
+
 
 
 
