@@ -65,6 +65,37 @@ En un estudio similar, @pitt2011estimation utilizan datos de costos de reclamos 
 
 Adicionalmente, los mismos autores exponen métodos para evaluar la bondad de ajuste de las distribuciones encontradas. Para evaluar todas las estimaciones propuestas se utiliza la log-verosimilitud, tanto la versión clásica como modificaciones ponderadas, mientras que para evaluar solamente los métodos no paramétricos se usan distintas versiones de una aproximación a errores cuadráticos integrados ponderados. Se concluye que la log-verosimilitud no es una buena medida de bondad de ajuste para comparar los ajustes no paramétricos, debido a su relación inversa con la magnitud del ancho de banda empleado. En general, de las propuestas paramétricas, la log-normal tuvo un mejor desempeño, el cual es un hallazgo que concuerda con el de @Flores, mientras que la estimación por kernel modificada tuvo un desempeño adecuado y se recomienda para modelar distribuciones con colas pesadas.
 
+El modelado de pérdidas agregadas es una técnica estadística ampliamente utilizada en el ámbito actuarial, cuyo objetivo es la obtención de una función de distribución de perdidas agregadas, a partir de la distribución de  frecuencia de reclamos, y de la distribución de la severidad de estos.  
+
+Un claro ejemplo de la implementación de esta técnica  es el estudio realizado por [@chen2020aggregate] . La principal motivación de este estudio es la de modelar la frecuencia de las pérdidas mediante el uso  de la familia de distribuciones Poisson-Tweedie con la finalidad de modelar la frecuencia de las perdidas y ver el impacto que tiene este sobre el modelo de pérdidas agregadas.
+
+Esto bajo el argumento que dichas familias presentan características como: el ajuste de la frecuencia de pérdidas es más flexible , reducen la posibilidad de una especificación errónea del modelo y dichas familias presentan una convolución cerrada. 
+
+Mediante el uso de la distribución de la familia Poisson-Tweedie y el estudio de simulación basados en: Percentil de la distribución de pérdidas agregadas bajo diferentes distribuciones de frecuencia de pérdidas (diferentes valores del parámetros de la familia ) y la investigación de estimadores de parámetros para frecuencia de pérdidas vía simulaciones de Monte Carlo, se investiga y encuentra el impacto de una mala especificación de la distribución perdida de la frecuencia al cuantil de pérdida agregadas, así como el sesgo del estimador de máxima verosimilitud del índice de la familia de Poisson-Tweedie.
+
+Una de las principales diferencias de los métodos implementados en el estudio realizado por [@chen2020aggregate] es el uso de máxima verosimilitud y la implementación de simulaciones vía Monte Carlo. A diferencia de los métodos empleados por [@pitt2011estimation] donde su estudio se centra en la comparación entre  métodos paramétricos tradicionales, y  métodos no paramétricos  basados en la estimación de densidades por Kernels modificados. 
+
+No obstante, pese a que según [@pitt2011estimation] se logra estimar de forma  adecuada la distribución tanto de costos médicos como de reclamos en seguros de automóviles, los métodos clásicos de estimación de densidades por kernels suelen ser inadecuados en presencia de asimetría, siendo esto habitual en datos de montos de reclamos.
+
+Pese a que el método de estimación  de densidades por kernels es técnicamente más sencillo que la implementación de los métodos utilizados por [@chen2020aggregate] , es importante tomar en consideración los problemas presentes en el estudio realizados por [@pitt2011estimation] , ya que pueden generar dificultades técnicas importantes. 
+
+Además, el uso de máxima verosimitud por parte de [@chen2020aggregate] para la escogencia de los parámetros es un método de uso más frecuente, para resolver problemas de esta índole.
+
+Sin embargo, debido al enfoque de  hace uso de una familia particular para modelar la frecuencia.No obstante, es importante señalar que existen test y pruebas especificas para escoger las distribuciones más adecuadas dada la base de datos de un estudio en particular. Estas técnicas estadísticas para la escogencia de las mejores distribuciones tanto de a frecuencia como la severidad son empleadas por [@cyprian] . 
+
+[@cyprian] hace uso de tres bases de seguros de automóviles gratuitas en R (AutoCollision, dataCar, dataOhlsson), en su estudio propone el modelado de la severidad mediante distribuciones continuas (Exponencial, Gamma, Pareto, Lognormal y Weibull) y discretas (Binomial, Geométrica, Binomial Negativa, Poisson) para el caso de la frecuencia, donde los parámetros se estiman vía máxima verosimilitud y los ajustes se miden con pruebas chi cuadrado (para la frecuencia) , Kolmogorov-Smirnov y Anderson-Darling (para la severidad).
+
+Una vez obtenidos los parámetros y realizadas las pruebas de ajuste, se seleccionan los modelos de acuerdo a sus medidas del Criterio de Información de Akaike (AIC) AIC y el Criterio de Información Bayesiano (BIC).
+
+Se concluye que la distribución que constituye el mejor modelo para la severidad es la lognormal, mientras que en cuanto a la frecuencia, las más adecuadas son la binomial negativa y la geométrica.
+
+A diferencia del estudio realizado por [@cyprian] en el cual usa conjuntamente métodos paramétricos y no paramétricos con el objetivo de compara estos, en este caso [@cyprian] se enfoca en utilizar un método paramétrico ampliamente utilizado como lo es la estimación de parámetros vía máxima verosimilitud.Sin embargo, se enfoca en implementar una gran variedad de pruebas, test y métricas para obtener las mejores distribuciones posibles tanto de la frecuencia como la severidad. 
+ 
+Es importante señalar que en el estudio de [@cyprian] no se realiza ninguna técnica para encontrar una distribución de perdidas agregadas, a diferencia del estudio de [@chen2020aggregate] donde si construyen esta distribución agregada.
+
+Pese a que las técnicas estadísticas implementadas por @cyprian son las tradicionales, a diferencia de los otros estudios mencionados en este apartado, si se tiene como objetivo escoger las mejores distribuciones para la frecuencia y severidad para nuestro estudio, es prudente seguir una línea de investigación similar a las empleadas en este estudio. El implementar métodos no  paramétricos como el de densidades por kernels puede traer complejidades técnicas.Además, el uso de una sola familia en particular como la Poisson-Tweedie tal y como lo expuesto por [@chen2020aggregate] puede limitar la escogencia del mejor modelo que describa de forma apropiada nuestra pregunta de investigación. 
+
+
 
 
 # Tablas
