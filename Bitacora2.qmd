@@ -5,6 +5,7 @@ editor: source
 ---
 
 ```{r echo=FALSE}
+#| output: false
 library(readxl)
 library(kableExtra)
 library(readr)
@@ -15,9 +16,13 @@ library(stringr) # función str_replace
 library(lubridate)
 library(moments) # funciones skewness y kurtosis
 library(ggplot2)
+library(actuar)
+library(fitdistrplus)
 ```
 
 ```{r, echo=F}
+#| output: false
+#| warning: false
 
 # Se carga la base
 
@@ -33,8 +38,6 @@ base %<>% mutate_at(c('close_amount', 'claim_amount'),
   mutate_at(c('close_amount', 'claim_amount'), funs(str_remove(., ";")))  %>%   mutate_at(c('close_amount', 'claim_amount'), funs(as.numeric(.))) %>% mutate(date_received = dmy(date_received))  
 
 attach(base) # Se fijan las variables de la tabla
-
-
 ```
 
 # Ordenamiento de la literatura
@@ -51,6 +54,17 @@ tabla %>%
 
 rm(tabla)
 ```
+
+\newpage
+
+# Enlaces de la literatura
+
+En @Flores se establece el procedimiento base para conseguir las distribución agregada al igual que algunos hallazgos y metodologías que son de alta utilidad. Primero la agregación de los datos se hace mensualmente con suma para la severidad y por frecuencia para los reclamos. El autor nota que hay un tendencia negativa de la frecuencia y severidad con respecto al tiempo por lo que procede a eliminarla. Luego, determina la mejor distribución para cada variable utilizando estimación de máxima verosimilitud (MLE). Se encuentra que la binomial negativa se ajusta mejor a las frecuencias. Por otro lado, la Log-Laplace se ajusta mejor a los reclamos por daños a la propiedad y la lognormal se ajusta mejor a los reclamos por pérdidas de los bienes, por lo que se utilizan estas dos para modelar la severidad. Durante este proceso el autor nota que la eliminación de la tendencia facilita el proceso de ajustar una distribución a la frecuencia y la severidad. Finalmente, las cópulas multivariadas se comparan utilizando log verosimilitud y se obtiene que las cópulas elípticas (Gaussiana y t-Student) se ajustan mejor que las arquimedianas (Clayton y Gumbel).
+
+En un estudio similar, @pitt2011estimation utilizan datos de costos de reclamos hechos a una aseguradora española por accidentes ocurridos en el año 2000 y recopilados en 2002, que incluye tanto los ligados a costos por daños a la propiedad como por costos médicos. El tamaño de muestra es de 518 reclamos. Al igual que el estudio anterior, para estimar la densidad para cada uno de los costos (daños a la propiedad y médicos) se utilizan métodos paramétricos como las aproximaciones normales y log-normales. En contraste al estudio pasado también recurren a estimadores no paramétricos como la aproximación por kernels modificada, donde la modificación consiste en que primero se aplica una transformación a los datos originales para corregir la asimetría, se hace una aproximación con un kernel gaussiano a los datos modificados, y luego se calcula la aproximación de los datos originales a partir de la calculada para los modificados. La transformación aplicada a los datos se enmarca en la *shifted power transformation family*. 
+
+Adicionalmente, los mismos autores exponen métodos para evaluar la bondad de ajuste de las distribuciones encontradas. Para evaluar todas las estimaciones propuestas se utiliza la log-verosimilitud, tanto la versión clásica como modificaciones ponderadas, mientras que para evaluar solamente los métodos no paramétricos se usan distintas versiones de una aproximación a errores cuadráticos integrados ponderados. Se concluye que la log-verosimilitud no es una buena medida de bondad de ajuste para comparar los ajustes no paramétricos, debido a su relación inversa con la magnitud del ancho de banda empleado. En general, de las propuestas paramétricas, la log-normal tuvo un mejor desempeño, el cual es un hallazgo que concuerda con el de @Flores, mientras que la estimación por kernel modificada tuvo un desempeño adecuado y se recomienda para modelar distribuciones con colas pesadas.
+
 
 
 # Tablas
@@ -88,6 +102,48 @@ tabla %>%
 
 ```
 
+Se cargan los datos al estilo David, no entiendo cual es el problema con hacerlo asi
+
+```{r}
+#| warning: false
+#| echo: false
+ 
+#Se cargan y depuran los datos
+datos <- read.csv('tsa_claims.csv') %>% 
+  clean_names() #se limpian nombres columnas
+datos <- datos %>% mutate(date_received = dmy(date_received),
+                      incident_date = mdy_hm(incident_date), 
+                      claim_amount = as.numeric(gsub("\\$", "", claim_amount)),
+                      close_amount = as.numeric(gsub("\\$", "", close_amount)))
+
+```
+
+
+
+
+```{r}
+#| cap-location: top
+#| fig-cap: "Severidad promedio por mes de los reclamos"
+
+
+df1 <- datos %>% group_by( month(date_received) ) %>%
+  summarise(es = mean(close_amount, na.rm = TRUE))
+colnames(df1) <- c("Mes", "Severidad promedio")
+
+kable(df1) %>% kable_styling(full_width = FALSE)
+```
+
+```{r}
+#| cap-location: top
+#| fig-cap: "Conteo reclamos por tipo"
+
+
+df2 <- datos %>% group_by( claim_type ) %>% summarise(n = n())
+colnames(df2) <- c("Tipo de reclamo", "Ocurrencias")
+
+kable(df2) %>% kable_styling(full_width = FALSE)
+```
+
 
 
 # Gráficos
@@ -102,6 +158,58 @@ ggplot(base, aes(year(date_received))) +
   scale_x_continuous(limits = c(a,b))
 
 ```
+
+
+```{r}
+df <- datos %>% group_by(year(date_received), month(date_received) ) %>%
+  summarise(s = sum(close_amount, na.rm = TRUE), n=n())
+df <- cbind( t=1:179, df)
+df <- df[1:172,]
+```
+
+```{r}
+#| cap-location: top
+#| fig-cap: "Número de reclamos mensuales del 2002 al 2015"
+
+ggplot(df, aes( x=t, y = n)) + geom_point(color='red', size=2) + 
+  xlab("Tiempo") + ylab("Reclamos")+
+  theme_minimal()
+```
+
+```{r}
+df3 <- datos %>% group_by(year(date_received), month(date_received) ) %>%
+  summarise(s = mean(close_amount, na.rm = TRUE)) %>% na.omit()
+
+df3 <- cbind(t=1:105, df3)
+```
+
+```{r}
+#| cap-location: top
+#| fig-cap: "Severidad promedio mensual entre 2002 y 2015"
+
+ggplot(df3, aes( x=t, y = s)) + geom_point(color='red', size=2) + 
+  xlab("Tiempo") + ylab("Severidad promedio")+
+  theme_minimal()
+```
+
+
+
+```{r}
+descdist( df$s, discrete=FALSE, boot=1000)
+```
+
+# Fichas Bibliográficas:
+1). 
+
+- Nombre de su hallazgo/resultado: Tendencia negativa de los reclamos
+
+- Resumen en una oración: El número de reclamos mensuales parece hacer incrementado rápidamente poco tiempo de abrirse el TSA hasta alcanzar y máximo y desde entonces se ha mostrado un comportamiento a la baja de la cantidad de reclamos hechos.
+
+- Principal característica: Tendencia negativa
+
+- Problemas o posibles desafíos: En @Flores, se comenta que la existencia de una tendencia en los reclamos puede causar problemas al momento de buscar las distribuciones que se ajusten a los datos.
+
+- Resumen en un párrafo: El número de reclamos mensuales parece hacer incrementado rápidamente poco tiempo de abrirse el TSA. Esto se podría explicar por la poca experiencia en materia de chequeos y procedimientoslo que posiblemente causó problemas mala práctica con los pasajeros. Sin embargo, luego de alcanzarse un máximo, este comportamiento cambia a un decrecimiento desde entonces. Esto se debe a que probablemente el TSA se ha vuelto mejor con el manejo de los chequeos. Esta tendencia puede ser un problema porque en la literatura se expresó que puede complicar el proceso de ajustar una distribución a los reclamos, notando que al eliminar esta tendencia se facilitaba esta búsqueda. 
 
 
 
