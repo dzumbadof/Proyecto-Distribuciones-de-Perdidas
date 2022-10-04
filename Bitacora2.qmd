@@ -18,6 +18,8 @@ library(moments) # funciones skewness y kurtosis
 library(ggplot2)
 library(actuar)
 library(fitdistrplus)
+library(stats)
+library(cowplot) # mejorar el aspecto de los gráficos
 ```
 
 ```{r, echo=F}
@@ -26,18 +28,14 @@ library(fitdistrplus)
 
 # Se carga la base
 
-base <- read_csv("tsa_claims.csv", ) %>%
-  na.omit() %>% # Se eliminan NA's
-  clean_names()  # Se pasan todos los nombres a minúculas
-
+datos <- read_csv("tsa_claims.csv") %>% clean_names()  # Se pasan todos los nombres a minúculas
 
 # Se ajusta el formato de las variables numéricas de montos y de fecha
   
-base %<>% mutate_at(c('close_amount', 'claim_amount'),
-                    funs(str_remove(., "\\$"))) %>%
-  mutate_at(c('close_amount', 'claim_amount'), funs(str_remove(., ";")))  %>%   mutate_at(c('close_amount', 'claim_amount'), funs(as.numeric(.))) %>% mutate(date_received = dmy(date_received))  
+datos %<>% mutate_at(c('close_amount', 'claim_amount'), funs(str_remove(., "\\$"))) %>%
+  mutate_at(c('close_amount', 'claim_amount'), funs(str_remove(., ";")))  %>%   mutate_at(c('close_amount', 'claim_amount'), funs(as.numeric(.))) %>% mutate(date_received = dmy(date_received))
 
-attach(base) # Se fijan las variables de la tabla
+attach(datos) # Se fijan las variables de la tabla
 ```
 
 # Ordenamiento de la literatura
@@ -93,21 +91,17 @@ A diferencia del estudio realizado por [@cyprian] en el cual usa conjuntamente m
  
 Es importante señalar que en el estudio de [@cyprian] no se realiza ninguna técnica para encontrar una distribución de perdidas agregadas, a diferencia del estudio de [@chen2020aggregate] donde si construyen esta distribución agregada.
 
-Pese a que las técnicas estadísticas implementadas por @cyprian son las tradicionales, a diferencia de los otros estudios mencionados en este apartado, si se tiene como objetivo escoger las mejores distribuciones para la frecuencia y severidad para nuestro estudio, es prudente seguir una línea de investigación similar a las empleadas en este estudio. El implementar métodos no  paramétricos como el de densidades por kernels puede traer complejidades técnicas.Además, el uso de una sola familia en particular como la Poisson-Tweedie tal y como lo expuesto por [@chen2020aggregate] puede limitar la escogencia del mejor modelo que describa de forma apropiada nuestra pregunta de investigación. 
+Pese a que las técnicas estadísticas implementadas por @cyprian son las tradicionales, a diferencia de los otros estudios mencionados en este apartado, sí se tiene como objetivo escoger las mejores distribuciones para la frecuencia y severidad para nuestro estudio, es prudente seguir una línea de investigación similar a las empleadas en este estudio. El implementar métodos no  paramétricos como el de densidades por kernels puede traer complejidades técnicas. Además, el uso de una sola familia en particular como la Poisson-Tweedie tal y como lo expuesto por [@chen2020aggregate] puede limitar la escogencia del mejor modelo que describa de forma apropiada nuestra pregunta de investigación. 
 
 
 
 
 # Tablas
 
-Cabe mencionar que después de eliminar observaciones con datos desconocidos ($\texttt{NA}$), se cuenta con un total de 94 848 observaciones.
-
-
 ```{r}
-
 medidas <- function(x){
   r <- summary(x) %>% as.vector()
-  temp <- data.frame(c(r, sd(x), IQR(x),skewness(x), kurtosis(x)))
+  temp <- data.frame(c(r[-7], sd(x, na.rm=F), IQR(x, na.rm=T),skewness(x, na.rm=T), kurtosis(x, na.rm=T)))
   return(temp)
 }
 
@@ -124,16 +118,16 @@ nombres <- c("Mínimo",
 
 tabla <- medidas(close_amount)
 rownames(tabla) <- nombres
+colnames(tabla) <- "Valor"
 
-tabla %>%
-  kbl(caption = "Medidas de resumen", col.names = F) %>%
+tabla %>%  kbl(caption = "Medidas de resumen", digits = 2) %>%
   kable_styling() %>%
   kable_classic_2(full_width = T) %>% 
    row_spec(0, bold = T)
-
 ```
 
-Se cargan los datos al estilo David, no entiendo cual es el problema con hacerlo asi
+Se cargan los datos al estilo David, no entiendo cual es el problema con hacerlo asi Oye, tranquilo, viejo
+
 
 ```{r}
 #| warning: false
@@ -200,14 +194,31 @@ kable(dfConteoAerolineas) %>% kable_styling(full_width = FALSE)
 
 # Gráficos
 
+En la figura \ref{fig:CantReportAño} se observa que en el periodo considerado la cantidad de reclamos a  TSA fue máxima en 2004 y, desde entonces, experimenta un comportamiento decreciente.
 
-```{r}
-a <- min(year(date_received))
-b <- max(year(date_received))
 
-ggplot(base, aes(year(date_received))) +  
-  stat_count(geom='bar', aes(y=..count..))+ 
-  scale_x_continuous(limits = c(a,b))
+```{r, fig.lp="CantReportAño", fig.cap="Cantidad de reportes por año}
+# a <- min(year(date_received), na.rm = T)
+
+# datos %>% count(year(date_received))
+
+g <- ggplot(datos, aes(year(date_received)))
+
+g <- g + stat_count(geom='bar', aes(y=..count..), color="green") 
+
+g <- g +  scale_x_continuous(breaks = c(2002:2015), limits = c(2001, 2016))
+
+g <- g + labs( x = "Años",
+   y = "Cantidad de reportes",
+   caption = "Fuente: Elaboración propia con datos de TSA")
+
+g <- g + scale_fill_manual(values = c("blue"))
+
+g <- g + theme_minimal_hgrid()
+
+#  g <- g + theme(axis.text.x = element_text(angle = 90))
+
+g
 
 ```
 
@@ -275,7 +286,9 @@ graficoAerolineasSeveridad <-  graficoAerolineasSeveridad +  theme_cowplot(8) + 
  graficoAerolineasSeveridad
 
 ```
+
 ```{r}
+
 
 #En este caso graficamos aquellas 5 tipos de reclamo con  mayor monto pagado promedio 
 
@@ -324,6 +337,7 @@ descdist( df$s, discrete=FALSE, boot=1000)
 ```
 
 # Fichas Bibliográficas:
+
 1). 
 
 - Nombre de su hallazgo/resultado: Tendencia negativa de los reclamos
@@ -337,4 +351,5 @@ descdist( df$s, discrete=FALSE, boot=1000)
 - Resumen en un párrafo: El número de reclamos mensuales parece hacer incrementado rápidamente poco tiempo de abrirse el TSA. Esto se podría explicar por la poca experiencia en materia de chequeos y procedimientoslo que posiblemente causó problemas mala práctica con los pasajeros. Sin embargo, luego de alcanzarse un máximo, este comportamiento cambia a un decrecimiento desde entonces. Esto se debe a que probablemente el TSA se ha vuelto mejor con el manejo de los chequeos. Esta tendencia puede ser un problema porque en la literatura se expresó que puede complicar el proceso de ajustar una distribución a los reclamos, notando que al eliminar esta tendencia se facilitaba esta búsqueda. 
 
 
+2). Asimetría de los montos pagados 
 
