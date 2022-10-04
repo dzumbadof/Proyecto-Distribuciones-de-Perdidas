@@ -34,10 +34,6 @@ datos <- read_excel("claims-2010-2013.xlsx") %>%
 datos <- datos %>% mutate(date_received = ymd(date_received),
                       close_amount = as.numeric(gsub("\\$", "", close_amount)))
 
-# Se filtran los reclamos aprobados o en los que se llegó a un acuerdo
-
-datos <- datos %>% filter(disposition == "Settle" | disposition== "Approve in Full")
-
 # Se fija la base de datos
 
 attach(datos)
@@ -106,7 +102,11 @@ Pese a que las técnicas estadísticas implementadas por @cyprian son las tradic
 # X: Severidad
 # N: Frecuencia
 
-datos_agregados <- datos %>% group_by("año" = year(date_received), "mes" = month(date_received) ) %>%  summarise(X = sum(close_amount), N = n()) %>% ungroup() %>% mutate(t = c(1:48), .before = X)
+# Se filtran los reclamos aprobados o en los que se llegó a un acuerdo
+
+datos_agregados <- datos %>% filter(disposition == "Settle" | disposition== "Approve in Full")
+
+datos_agregados <- datos_agregados %>% group_by("año" = year(date_received), "mes" = month(date_received) ) %>%  summarise(X = sum(close_amount), N = n()) %>% ungroup() %>% mutate(t = c(1:48), .before = X)
 
 medidas <- function(x){
   r <- summary(x) %>% as.vector()
